@@ -1,21 +1,32 @@
-import React from 'react'
+import React, { useEffect, useRef } from "react";
 
-const DataTable = ({items, renderHead, renderRow}) => {
+import './styles.css'
+
+const DataTable = ({ items, renderHead, renderRow, loadMore }) => {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    document.addEventListener("scroll", handleScroll);
+
+    return () => document.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  function handleScroll(e) {
+    const cY = window.scrollY;
+    const tbh = ref.current.offsetHeight;
+    const thresh = 1000;
+    if (tbh - cY - thresh < 0) loadMore();
+  }
+
   return (
     <table>
       <thead>
-        <tr>
-          {renderHead()}
-        </tr>
+        <tr>{renderHead()}</tr>
       </thead>
 
-      <tbody>
-        {
-          items.map((row) => renderRow(row))
-        }
-      </tbody>
+      <tbody ref={ref}>{items.map(row => renderRow(row))}</tbody>
     </table>
-  )
-}
+  );
+};
 
-export default DataTable
+export default DataTable;

@@ -1,16 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
+
 import DataTable from "./datatable";
-import json from '../data/photos.json'
+import json from "../data/photos.json";
+
+function pageData({data, per = 50, page = 1}) {
+  return data.slice(per * (page - 1), per * page);
+}
 
 const App = () => {
+  const [state, setState] = useState({
+    photos: pageData({ data: json }),
+    loading: false,
+    page: 1
+  });
+ 
 
-  function get50(data) {
-    return data.slice(0, 50)
+  function loadMore() {
+    if (state.loading) return;
+    setState(prev => ({
+      ...prev,
+      loading: true
+    }));
+    setState(prev => ({
+      photos: [
+        ...prev.photos,
+        ...pageData({ data: json, page: prev.page + 1 })
+      ],
+      loading: false,
+      page: prev.page + 1
+    }));
   }
-  
+
   return (
     <DataTable
-    items={get50(json)}
+      loadMore={loadMore}
+      items={state.photos}
       renderHead={() => (
         <tr>
           <th>ID</th>
