@@ -36,12 +36,12 @@ const App = () => {
       loadMore={loadMore}
       items={state.photos}
       renderHead={() => (
-        <tr>
+        <>
           <th>ID</th>
           <th>Album Id</th>
           <th>Title</th>
           <th>Thumbnail</th>
-        </tr>
+        </>
       )}
       renderRow={row => (
         <tr>

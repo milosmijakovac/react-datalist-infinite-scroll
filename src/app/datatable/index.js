@@ -19,7 +19,7 @@ const DataTable = ({ items, renderHead, renderRow, loadMore }) => {
   }
 
   return (
-    <table>
+    <table className="data__table">
       <thead>
         <tr>{renderHead()}</tr>
       </thead>
